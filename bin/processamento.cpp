@@ -40,9 +40,9 @@ processamento::processamento(Mat *matriz) {
 
 processamento::~processamento() {
     this->matriz = NULL;
-    delete this->R;
-    delete this->G;
-    delete this->B;
+    this->R = NULL;
+    this->G = NULL;
+    this->B = NULL;
 }
 
 void processamento::setMatriz(Mat *matriz) {
@@ -88,9 +88,9 @@ paralelo::paralelo(Mat *matriz) : processamento(matriz) {}
 
 paralelo::~paralelo() {
     this->matriz = NULL;
-    delete this->R;
-    delete this->G;
-    delete this->B;
+    this->R = NULL;
+    this->G = NULL;
+    this->B = NULL;
 }
 
 Mat paralelo::processando() {
@@ -102,9 +102,9 @@ sequencial::sequencial(Mat *matriz) : processamento(matriz) {}
 
 sequencial::~sequencial() {
     this->matriz = NULL;
-    delete this->R;
-    delete this->G;
-    delete this->B;
+    this->R = NULL;
+    this->G = NULL;
+    this->B = NULL;
 }
 
 Mat sequencial::processando() {
