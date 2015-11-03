@@ -21,16 +21,17 @@ using namespace cv;
 void sum5(Mat *matriz, int linha, int coluna, int flag) {
     int i,j;
     unsigned char sum = 0;
+    Scalar temp;
     for(i = (linha - 2); i <= (linha + 2); i++){
         for(j = (coluna - 2); j <= (coluna + 2); j++) {
             if (i >= 0 && j >= 0) {
-                Scalar temp = (*matriz).at<unsigned char>(i,j);
+                temp = (*matriz).at<unsigned char>(i,j);
                 sum += temp[flag];
             }
         }
     }
-    temp[flag] = sum;
-    (*matriz).at<unsigned char>(linha,coluna) = temp;
+    temp[flag] = (sum/25);
+    (*matriz).at<Scalar>(linha,coluna) = temp;
 }
 
 processamento::processamento(Mat *matriz) {
@@ -59,8 +60,8 @@ void processamento::setRGB() {
 
 void processamento::smooth(Mat *matriz, int flag) {
     int i,j;
-    for (i = 0; i < matriz.rows; i++) {
-        for (j = 0; j < matriz.cols; j++) {
+    for (i = 0; i < matriz->rows; i++) {
+        for (j = 0; j < matriz->cols; j++) {
             sum5(matriz,i,j,flag);
         }
     }
@@ -87,35 +88,33 @@ Mat processamento::processando() {}
 paralelo::paralelo(Mat *matriz) : processamento(matriz) {}
 
 paralelo::~paralelo() {
-    this->matriz = NULL;
-    this->R = NULL;
-    this->G = NULL;
-    this->B = NULL;
+    matriz = NULL;
+    R = NULL;
+    G = NULL;
+    B = NULL;
 }
 
 Mat paralelo::processando() {
-    
-    return &;
 }
 
 sequencial::sequencial(Mat *matriz) : processamento(matriz) {}
 
 sequencial::~sequencial() {
-    this->matriz = NULL;
-    this->R = NULL;
-    this->G = NULL;
-    this->B = NULL;
+    matriz = NULL;
+    R = NULL;
+    G = NULL;
+    B = NULL;
 }
 
 Mat sequencial::processando() {
-    this->smooth(this->R, SCALARRED);
-    this->smooth(this->G, SCALARGREEN);
-    this->smooth(this->B, SCALARBLUE);
+    smooth(R, SCALARRED);
+    smooth(G, SCALARGREEN);
+    smooth(B, SCALARBLUE);
     
     Mat aux[3], R_imagem;
-    aux[0] = *(this->R);
-    aux[1] = *(this->G);
-    aux[2] = *(this->B);
+    aux[0] = *(R);
+    aux[1] = *(G);
+    aux[2] = *(B);
     
     merge(aux,3,R_imagem);
     

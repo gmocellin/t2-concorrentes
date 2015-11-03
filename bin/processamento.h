@@ -4,11 +4,13 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
+using namespace cv;
+
 class processamento {
 protected:
     Mat *matriz, *R, *G, *B;
     
-    void setRGB(Mat *matriz);
+    void setRGB();
     void setMatriz(Mat *matriz);
     
     void smooth(Mat *matriz,int flag);
@@ -24,7 +26,7 @@ public:
     Mat *getMatriz();
     
     virtual Mat processando();
-}
+};
 
 class paralelo : public processamento {
 public:
@@ -34,7 +36,7 @@ public:
     ~paralelo();
     
     Mat processando();
-}
+};
 
 class sequencial : public processamento {
 public:
@@ -44,6 +46,6 @@ public:
     ~sequencial();
     
     Mat processando();
-}
+};
 
 #endif

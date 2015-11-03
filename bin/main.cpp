@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     Mat imagem;
     imagem = imread(argv[2], CV_LOAD_IMAGE_COLOR);
     
-    if(!image.data) {
+    if(!imagem.data) {
         cout <<  "Imagem nao encontrada." << endl;
         return -1;
     }
