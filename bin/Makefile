@@ -6,10 +6,13 @@ ZIP=t2-concorrentes.zip Makefile *.cpp
 REMOVE=*.o *new.jpg t2-concorrentes
 
 all: $(LINKERS)
-	@g++ $(OPENCVFLAGS) $(LINKERS) $(COMPILEFLAGS) t2-concorrentes -fopenmp
+	@mpic++ $(OPENCVFLAGS) $(LINKERS) $(COMPILEFLAGS) t2-concorrentes -fopenmp
 
 main.o:
-	@g++ $(OPENCVFLAGS) $(LINKERFLAGS) main.cpp -fopenmp
+	@mpic++ $(OPENCVFLAGS) $(LINKERFLAGS) main.cpp -fopenmp
+
+run_mpi:
+	@mpirun -np 4 ./t2-concorrentes ${ARGS}
 
 run:
 	@./t2-concorrentes ${ARGS}
