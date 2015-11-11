@@ -87,7 +87,8 @@ int main(int argc, char *argv[]) {
                 //#pragma omp parallel reduction(+:R,G,B)
                 for(linha = (i - 2); linha <= (i + 2); linha++){
                     for(coluna = (j - 2); coluna <= (j + 2); coluna++) {
-                        if ((linha >= 0 && linha < imagem.rows) && (coluna >= 0 && coluna < imagem.cols)) {
+                        if ((tamanho[0]+linha >= 0 && tamanho[0]+linha < imagem.rows) 
+                                && (tamanho[2]+coluna >= 0 && tamanho[2]+coluna < imagem.cols)) {
                             B += imagem.at<Vec3b>(tamanho[0]+linha,tamanho[2]+coluna)[0];
                             G += imagem.at<Vec3b>(tamanho[0]+linha,tamanho[2]+coluna)[1];
                             R += imagem.at<Vec3b>(tamanho[0]+linha,tamanho[2]+coluna)[2];
