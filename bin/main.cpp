@@ -43,10 +43,6 @@ int main(int argc, char *argv[]) {
             int count = 0;
             for (i = 0; i < nLinha; i++) {
                 tamanho[0] = tamanhoLinha*i;
-                /*if (tamanhoLinha*(i+1) == (imagem.rows - 1))
-                    tamanho[1] = tamanhoLinha;
-                else
-                    tamanho[1] = (tamanhoLinha-1);*/
                 if (tamanhoLinha*(i+1) == ((imagem.rows+1) - (nProcessos/2)))
                     tamanho[1] = ((tamanhoLinha-1)+(nProcessos/2));
                 else
@@ -60,10 +56,7 @@ int main(int argc, char *argv[]) {
                         tamanho[3] = tamanhoColuna+1;
                     else
                         tamanho[3] = tamanhoColuna;
-                    /*if (tamanhoColuna*(j+1) == (imagem.cols - (nProcessos/2) - 1))
-                        tamanho[3] = (tamanhoColuna+(nProcessos-2));
-                    else
-                        tamanho[3] = (tamanhoColuna-1);*/
+
                     MPI_Send(tamanho, 4, MPI_INT, count, 0, MPI_COMM_WORLD);
                 }
             }
@@ -121,9 +114,6 @@ int main(int argc, char *argv[]) {
             hconcat(nova_imagem, aux, nova_imagem);
             char nome[100] = "new_";
             strcat(nome, argv[2]);
-            //char *nome = (char *) malloc (100 * sizeof(char)); 
-            //strncpy(nome,argv[2],(strlen(argv[2])-4));
-            //strcat(nome,"_new.jpg");
             
             cout << nome << endl;
             imwrite(nome,nova_imagem);
@@ -158,10 +148,7 @@ int main(int argc, char *argv[]) {
         }
         char nome[100] = "new_";
         strcat(nome, argv[2]);
-        //char *nome = (char *) malloc (100 * sizeof(char)); 
-        //strncpy(nome,argv[2],(strlen(argv[2])-4));
-        //strcat(nome,"_new.jpg");
-        
+
         cout << nome;
         imwrite(nome,nova_imagem);
         cout << "fim" << endl;
