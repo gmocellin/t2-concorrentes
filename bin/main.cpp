@@ -138,6 +138,7 @@ int main(int argc, char *argv[]) {
         MPI_Finalize();
     }
     else if (strcmp (argv[1], "normal") == 0) {
+        imagem.copyTo(nova_imagem);
         for (i = 0; i < imagem.rows; i++) {
             for (j = 0; j < imagem.cols; j++) {
                 float sum[3] = {0, 0, 0};

@@ -12,10 +12,10 @@ main.o:
 	@mpic++ $(OPENCVFLAGS) $(LINKERFLAGS) main.cpp -fopenmp
 
 run_mpi:
-	@mpirun -np 4 ./t2-concorrentes ${ARGS}
+	@mpirun -np 8 ./t2-concorrentes thread ${ARGS}
 
 run:
-	@./t2-concorrentes ${ARGS}
+	@./t2-concorrentes normal ${ARGS}
 
 tests-normal:
 	@./tests-normal.sh
