@@ -3,7 +3,7 @@ LINKERFLAGS=-c -g -O3
 COMPILEFLAGS=-g -O3 -o
 LINKERS=main.o
 ZIP=t2-concorrentes.zip Makefile *.cpp
-REMOVE=*.o *new.jpg t2-concorrentes
+REMOVE=*.o new*.jpg t2-concorrentes
 
 all: $(LINKERS)
 	@mpic++ $(OPENCVFLAGS) $(LINKERS) $(COMPILEFLAGS) t2-concorrentes -fopenmp
