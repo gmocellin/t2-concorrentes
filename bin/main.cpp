@@ -73,11 +73,11 @@ int main(int argc, char *argv[]) {
         Mat processing = imagem(rL,rC).clone();
         processing.copyTo(nova_imagem);
         
-        //#pragma omp parallel
+        #pragma omp parallel for
         for (i = 0; i < processing.rows; i++) {
             for (j = 0; j < processing.cols; j++) {
                 float R = 0, G = 0, B = 0;
-                //#pragma omp parallel reduction(+:R,G,B)
+                #pragma omp parallel for reduction(+:R)
                 for(linha = (i - 2); linha <= (i + 2); linha++){
                     for(coluna = (j - 2); coluna <= (j + 2); coluna++) {
                         if ((tamanho[0]+linha >= 0 && tamanho[0]+linha < imagem.rows) 
