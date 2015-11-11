@@ -47,19 +47,19 @@ int main(int argc, char *argv[]) {
                     tamanho[1] = tamanhoLinha;
                 else
                     tamanho[1] = (tamanhoLinha-1);*/
-                if (tamanhoLinha*(j+1) == (imagem.rows - (nProcessos/2) - 1))
-                    tamanho[1] = (tamanhoLinha+(nProcessos-2));
+                if (tamanhoLinha*(i+1) == ((imagem.rows+1) - (nProcessos/2)))
+                    tamanho[1] = ((tamanhoLinha-1)+(nProcessos/2));
                 else
-                    tamanho[1] = (tamanhoLinha-1);
+                    tamanho[1] = tamanhoLinha;
                 for (j = 0; j < nColuna; j++) {
                     if ((i == 0) && (j == 0))
                         continue;
                     count++;
                     tamanho[2] = tamanhoColuna*j;
-                    if (tamanhoColuna*(i+1) == (imagem.cols - 1))
-                        tamanho[3] = tamanhoColuna;
+                    if (tamanhoColuna*(j+1) == (imagem.cols - 1))
+                        tamanho[3] = tamanhoColuna+1;
                     else
-                        tamanho[3] = (tamanhoColuna-1);
+                        tamanho[3] = tamanhoColuna;
                     /*if (tamanhoColuna*(j+1) == (imagem.cols - (nProcessos/2) - 1))
                         tamanho[3] = (tamanhoColuna+(nProcessos-2));
                     else
@@ -68,30 +68,29 @@ int main(int argc, char *argv[]) {
                 }
             }
             tamanho[0] = 0;
-            tamanho[1] = tamanhoLinha-1;
+            tamanho[1] = tamanhoLinha;
             tamanho[2] = 0;
-            tamanho[3] = tamanhoColuna-1;
+            tamanho[3] = tamanhoColuna;
         }
         else
             MPI_Recv(tamanho, 4, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
         
-        cout << "DEBUG tamanho: " << tamanho[0] << " " << tamanho[2] << " " << tamanho[1] << " " << tamanho[3] << endl;
-        Rect rect = Rect(tamanho[0], tamanho[2], tamanho[1], tamanho[3]);
-        cout << "DEBUG rank: " << rank << endl;
-        imagem = imagem(rect);
-        imagem.copyTo(nova_imagem);
+        Range rL = Range(tamanho[0],tamanho[1]+tamanho[0]);
+        Range rC = Range(tamanho[2],tamanho[3]+tamanho[2]);
+        Mat processing = imagem(rL,rC).clone();
+        processing.copyTo(nova_imagem);
         
         //#pragma omp parallel
-        for (i = 0; i < imagem.rows; i++) {
-            for (j = 0; j < imagem.cols; j++) {
+        for (i = 0; i < processing.rows; i++) {
+            for (j = 0; j < processing.cols; j++) {
                 float R = 0, G = 0, B = 0;
                 //#pragma omp parallel reduction(+:R,G,B)
                 for(linha = (i - 2); linha <= (i + 2); linha++){
                     for(coluna = (j - 2); coluna <= (j + 2); coluna++) {
                         if ((linha >= 0 && linha < imagem.rows) && (coluna >= 0 && coluna < imagem.cols)) {
-                            B += imagem.at<Vec3b>(linha,coluna)[0];
-                            G += imagem.at<Vec3b>(linha,coluna)[1];
-                            R += imagem.at<Vec3b>(linha,coluna)[2];
+                            B += imagem.at<Vec3b>(tamanho[0]+linha,tamanho[2]+coluna)[0];
+                            G += imagem.at<Vec3b>(tamanho[0]+linha,tamanho[2]+coluna)[1];
+                            R += imagem.at<Vec3b>(tamanho[0]+linha,tamanho[2]+coluna)[2];
                         }
                     }
                 }
@@ -105,6 +104,7 @@ int main(int argc, char *argv[]) {
             Mat aux;
             for (i = 1; i < nProcessos; i++) {
                 MPI_Recv(tamanho, 4, MPI_INT, i, 1, MPI_COMM_WORLD, &status);
+                cout << tamanho[1] << " " << tamanho[3] << endl;
                 Mat pedaco(tamanho[1], tamanho[3], nova_imagem.type());
                 MPI_Recv(pedaco.data, tamanho[1]*tamanho[3]*imagem.channels(), MPI_UNSIGNED_CHAR, i, 2, MPI_COMM_WORLD, &status);
                 
@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
             //strncpy(nome,argv[2],(strlen(argv[2])-4));
             //strcat(nome,"_new.jpg");
             
-            cout << nome;
+            cout << nome << endl;
             imwrite(nome,nova_imagem);
             cout << "fim" << endl;
             //free(nome);
