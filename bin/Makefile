@@ -1,18 +1,17 @@
 OPENCVFLAGS=-L/usr/local/lib -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_video -lopencv_objdetect
-LINKERFLAGS=-c -g -O3
-COMPILEFLAGS=-g -O3 -o
+LINKERFLAGS=-I/usr/local/include -Wall -g -O3 -std=c++11 -fopenmp
 LINKERS=main.o
 ZIP=t2-concorrentes.zip Makefile *.cpp
 REMOVE=*.o new*.jpg t2-concorrentes
 
 all: $(LINKERS)
-	@mpic++ $(OPENCVFLAGS) $(LINKERS) $(COMPILEFLAGS) t2-concorrentes -fopenmp
+	@mpic++ $(LINKERS) $(LINKERFLAGS) -o t2-concorrentes -fopenmp $(OPENCVFLAGS) 
 
 main.o:
-	@mpic++ $(OPENCVFLAGS) $(LINKERFLAGS) main.cpp -fopenmp
+	@mpic++ -c $(LINKERFLAGS) main.cpp -fopenmp $(OPENCVFLAGS)
 
 run_mpi:
-	@mpirun -np 4 ./t2-concorrentes thread ${ARGS}
+	@mpirun -np 4 -hostfile $(HOSTFILE) ./t2-concorrentes thread ${ARGS}
 
 run:
 	@./t2-concorrentes normal ${ARGS}
