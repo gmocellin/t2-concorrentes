@@ -3,6 +3,7 @@ LINKERFLAGS=-I/usr/local/include -Wall -g -O3 -std=c++11 -fopenmp
 LINKERS=main.o
 ZIP=t2-concorrentes.zip Makefile *.cpp
 REMOVE=*.o new*.jpg t2-concorrentes
+HOSTFILE=hostfile
 
 all: $(LINKERS)
 	@mpic++ $(LINKERS) $(LINKERFLAGS) -o t2-concorrentes -fopenmp $(OPENCVFLAGS) 

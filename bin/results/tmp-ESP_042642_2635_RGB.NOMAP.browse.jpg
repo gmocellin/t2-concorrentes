@@ -1,100 +1,20 @@
 
-0.69
-
-0.73
-
-0.63
-
-0.62
-
-0.63
+0.81
 
 0.64
 
+0.61
+
 0.65
 
-0.62
+0.61
+
+0.64
+
+0.60
 
 0.63
 
-0.61
-[node15:11353] [[46832,0],0] ORTE_ERROR_LOG: Error in file base/plm_base_launch_support.c at line 1535
-[node15:11353] [[46832,0],0] ORTE_ERROR_LOG: Error in file plm_rsh_module.c at line 960
-[node15:11353] 1 more process has sent help message help-hostfile.txt / parse_error
-[node15:11353] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
-make[1]: *** [run_mpi] Error 1
-Command exited with non-zero status 2
+0.63
 
-0.02
-[node15:11360] [[46793,0],0] ORTE_ERROR_LOG: Error in file base/plm_base_launch_support.c at line 1535
-[node15:11360] [[46793,0],0] ORTE_ERROR_LOG: Error in file plm_rsh_module.c at line 960
-[node15:11360] 1 more process has sent help message help-hostfile.txt / parse_error
-[node15:11360] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
-make[1]: *** [run_mpi] Error 1
-Command exited with non-zero status 2
-
-0.02
-[node15:11367] [[46798,0],0] ORTE_ERROR_LOG: Error in file base/plm_base_launch_support.c at line 1535
-[node15:11367] [[46798,0],0] ORTE_ERROR_LOG: Error in file plm_rsh_module.c at line 960
-[node15:11367] 1 more process has sent help message help-hostfile.txt / parse_error
-[node15:11367] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
-make[1]: *** [run_mpi] Error 1
-Command exited with non-zero status 2
-
-0.02
-[node15:11374] [[46791,0],0] ORTE_ERROR_LOG: Error in file base/plm_base_launch_support.c at line 1535
-[node15:11374] [[46791,0],0] ORTE_ERROR_LOG: Error in file plm_rsh_module.c at line 960
-[node15:11374] 1 more process has sent help message help-hostfile.txt / parse_error
-[node15:11374] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
-make[1]: *** [run_mpi] Error 1
-Command exited with non-zero status 2
-
-0.02
-[node15:11381] [[46812,0],0] ORTE_ERROR_LOG: Error in file base/plm_base_launch_support.c at line 1535
-[node15:11381] [[46812,0],0] ORTE_ERROR_LOG: Error in file plm_rsh_module.c at line 960
-[node15:11381] 1 more process has sent help message help-hostfile.txt / parse_error
-[node15:11381] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
-make[1]: *** [run_mpi] Error 1
-Command exited with non-zero status 2
-
-0.02
-[node15:11388] [[46805,0],0] ORTE_ERROR_LOG: Error in file base/plm_base_launch_support.c at line 1535
-[node15:11388] [[46805,0],0] ORTE_ERROR_LOG: Error in file plm_rsh_module.c at line 960
-[node15:11388] 1 more process has sent help message help-hostfile.txt / parse_error
-[node15:11388] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
-make[1]: *** [run_mpi] Error 1
-Command exited with non-zero status 2
-
-0.02
-[node15:11395] [[46634,0],0] ORTE_ERROR_LOG: Error in file base/plm_base_launch_support.c at line 1535
-[node15:11395] [[46634,0],0] ORTE_ERROR_LOG: Error in file plm_rsh_module.c at line 960
-[node15:11395] 1 more process has sent help message help-hostfile.txt / parse_error
-[node15:11395] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
-make[1]: *** [run_mpi] Error 1
-Command exited with non-zero status 2
-
-0.02
-[node15:11402] [[46627,0],0] ORTE_ERROR_LOG: Error in file base/plm_base_launch_support.c at line 1535
-[node15:11402] [[46627,0],0] ORTE_ERROR_LOG: Error in file plm_rsh_module.c at line 960
-[node15:11402] 1 more process has sent help message help-hostfile.txt / parse_error
-[node15:11402] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
-make[1]: *** [run_mpi] Error 1
-Command exited with non-zero status 2
-
-0.02
-[node15:11409] [[46648,0],0] ORTE_ERROR_LOG: Error in file base/plm_base_launch_support.c at line 1535
-[node15:11409] [[46648,0],0] ORTE_ERROR_LOG: Error in file plm_rsh_module.c at line 960
-[node15:11409] 1 more process has sent help message help-hostfile.txt / parse_error
-[node15:11409] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
-make[1]: *** [run_mpi] Error 1
-Command exited with non-zero status 2
-
-0.02
-[node15:11416] [[46641,0],0] ORTE_ERROR_LOG: Error in file base/plm_base_launch_support.c at line 1535
-[node15:11416] [[46641,0],0] ORTE_ERROR_LOG: Error in file plm_rsh_module.c at line 960
-[node15:11416] 1 more process has sent help message help-hostfile.txt / parse_error
-[node15:11416] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
-make[1]: *** [run_mpi] Error 1
-Command exited with non-zero status 2
-
-0.02
+0.66
