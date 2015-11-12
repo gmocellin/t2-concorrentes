@@ -3,6 +3,7 @@ LINKERFLAGS=-I/usr/local/include -Wall -g -O3 -std=c++11 -fopenmp
 LINKERS=main.o
 ZIP=t2-concorrentes.zip Makefile *.cpp
 REMOVE=*.o new*.jpg t2-concorrentes
+HOSTFILE=hostfile
 
 all: $(LINKERS)
 	@mpic++ $(LINKERS) $(LINKERFLAGS) -o t2-concorrentes -fopenmp $(OPENCVFLAGS) 
@@ -11,7 +12,7 @@ main.o:
 	@mpic++ -c $(LINKERFLAGS) main.cpp -fopenmp $(OPENCVFLAGS)
 
 run_mpi:
-	@mpirun -np 4 -hostfile $(HOSTFILE) ./t2-concorrentes thread ${ARGS}
+	@mpirun -np 8 -hostfile $(HOSTFILE) ./t2-concorrentes thread ${ARGS}
 
 run:
 	@./t2-concorrentes normal ${ARGS}
