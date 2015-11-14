@@ -12,7 +12,7 @@ main.o:
 	@mpic++ -c $(LINKERFLAGS) main.cpp -fopenmp $(OPENCVFLAGS)
 
 run_mpi:
-	@mpirun -np 4 -hostfile $(HOSTFILE) ./t2-concorrentes thread ${ARGS}
+	@mpirun -np 2 -hostfile $(HOSTFILE) ./t2-concorrentes thread ${ARGS}
 
 run:
 	@./t2-concorrentes normal ${ARGS}
