@@ -17,7 +17,7 @@ do
 	done
 
 	echo images/$test_file
-	echo Average Singlethreaded Time: $(python -c "print (\"%.3f\" % ($total_time_single/10))")
+	echo Average MPI Time: $(python -c "print (\"%.3f\" % ($total_time_single/10))")
 	echo 
 
 	#rm results/tmp-$test_file
