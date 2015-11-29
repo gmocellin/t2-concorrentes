@@ -2,12 +2,14 @@ OPENCVFLAGS=-L/usr/local/lib -lopencv_core -lopencv_highgui -lopencv_imgproc -lo
 LINKERFLAGS=-I/usr/local/include -Wall -g -O3 -std=c++11 -fopenmp
 LINKERS=main.o
 ZIP=t2-concorrentes.zip Makefile *.cpp
-REMOVE=*.o new*.jpg t2-concorrentes
+REMOVE=*.o new*.jpg t2-concorrentes t3-concorrentes
 HOSTFILE=hostfile
 
 all: $(LINKERS)
-	@mpic++ $(LINKERS) $(LINKERFLAGS) -o t2-concorrentes -fopenmp $(OPENCVFLAGS) 
-	@nvcc t3-concorrentes.cu -o t3-concorrentes ${ARGS}
+	@mpic++ $(LINKERS) $(LINKERFLAGS) -o t2-concorrentes -fopenmp $(OPENCVFLAGS)
+
+compile_cuda: 
+	@nvcc t3-concorrentes.cu -g -o t3-concorrentes ${ARGS} $(OPENCVFLAGS)
 
 main.o:
 	@mpic++ -c $(LINKERFLAGS) main.cpp -fopenmp $(OPENCVFLAGS)
