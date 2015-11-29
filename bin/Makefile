@@ -7,6 +7,7 @@ HOSTFILE=hostfile
 
 all: $(LINKERS)
 	@mpic++ $(LINKERS) $(LINKERFLAGS) -o t2-concorrentes -fopenmp $(OPENCVFLAGS) 
+	@nvcc t3-concorrentes.cu -o t3-concorrentes ${ARGS}
 
 main.o:
 	@mpic++ -c $(LINKERFLAGS) main.cpp -fopenmp $(OPENCVFLAGS)
@@ -17,11 +18,17 @@ run_mpi:
 run:
 	@./t2-concorrentes normal ${ARGS}
 
+run_cuda:
+	@./t3-concorrentes ${ARGS}
+
 tests-normal:
 	@./tests-normal.sh
 
 tests-thread:
 	@./tests-thread.sh
+
+tests-cuda:
+	@./tests-cuda.sh
 
 zip:
 	@zip -r $(ZIP)
