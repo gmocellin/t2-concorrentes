@@ -18,11 +18,8 @@ __global__ void smoothCuda(unsigned char *imagemC, unsigned char *nova_imagemC, 
     int colunaPixel = posicaoPixel % (*cols);
 
     int linha, coluna;
-    //if(blockIdx.x > 100)
-        //printf("posicaoPixel=  %u\n", posicaoPixel);
-        //printf("BOCK ID  %d  %d\n", blockIdx.x, blockIdx.y);
-    //if(posicaoPixel > 1000)
-    //    printf("BLOCK ID %d\n", posicaoPixel);
+    if(blockIdx.x > 1000)
+        printf("block %d\n", blockIdx.x);
     if(posicaoPixel < (*rows)*(*cols)) {
         int sum[3] = {0, 0, 0};
         for(linha = (linhaPixel - 2); linha <= (linhaPixel + 2); linha++){
@@ -75,15 +72,14 @@ int main(int argc, char *argv[]) {
     cudaMalloc(&cols, sizeof(int));
     cudaMalloc(&rows, sizeof(int));
 
-    cudaMemcpy(nova_imagemC, nova_imagem.data, nova_imagem.total() * sizeof(unsigned char), cudaMemcpyHostToDevice);
-    cudaMemcpy(imagemC, imagem.data, imagem.total() * sizeof(unsigned char), cudaMemcpyHostToDevice);
-    cudaMemcpy(cols, &imagem.cols, sizeof(int), cudaMemcpyHostToDevice);
-    cudaMemcpy(rows, &imagem.rows, sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(nova_imagemC, nova_imagem.data, 3 * nova_imagem.total() * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(imagemC, imagem.data, 3 * imagem.total() * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(cols, &imagem.cols, sizeof(long unsigned int), cudaMemcpyHostToDevice);
+    cudaMemcpy(rows, &imagem.rows, sizeof(long unsigned int), cudaMemcpyHostToDevice);
   
-    printf("nBlocks %d\n", nBlocks);
     smoothCuda<<<nBlocks,nThreads>>>(imagemC, nova_imagemC, cols, rows);
     
-    cudaMemcpy(nova_imagem.data, nova_imagemC, nova_imagem.total()*sizeof(unsigned char), cudaMemcpyDeviceToHost);
+    cudaMemcpy(nova_imagem.data, nova_imagemC, 3 *  nova_imagem.total() * sizeof(unsigned char), cudaMemcpyDeviceToHost);
     
     // salva a imagem final com outro nome
     char nome[100] = "new_";
