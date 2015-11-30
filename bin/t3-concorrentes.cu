@@ -2,40 +2,32 @@
 #include <cstring>
 #include <cstdio>
 #include <cuda.h>
+#include <math.h>
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
-#define nThreads 512
+#define nThreads 1024
 
 using namespace std;
 using namespace cv;
 
-__global__ void smoothCuda(unsigned char *imagemC, unsigned char *nova_imagemC, int *cols, int *rows ){
+__global__ void smoothCuda(unsigned char *imagemC, unsigned char *nova_imagemC, long unsigned int *cols, long unsigned int *rows ){
 
-    int posicaoPixel = blockIdx.x * blockDim.x + threadIdx.x;
+    unsigned int posicaoPixel = blockIdx.x * blockDim.x + threadIdx.x;
     int linhaPixel = (int) posicaoPixel/(*cols);
     int colunaPixel = posicaoPixel % (*cols);
 
     int linha, coluna;
-    /*if(posicaoPixel == 21010){
-        printf("ANTES:\n");
-        printf("posicaoPixel: %d\n", posicaoPixel);
-        printf("linhaPixel: %d   colunaPixel: %d\n", linhaPixel, colunaPixel);
-        printf("Pixel: B=%u  G=%u  R=%u\n", imagemC[(linhaPixel * (*cols) + colunaPixel)*3],
-                                            imagemC[(linhaPixel * (*cols) + colunaPixel)*3+1],
-                                            imagemC[(linhaPixel * (*cols) + colunaPixel)*3+2]);
-    }*/
+    //if(blockIdx.x > 100)
+        //printf("posicaoPixel=  %u\n", posicaoPixel);
+        //printf("BOCK ID  %d  %d\n", blockIdx.x, blockIdx.y);
+    //if(posicaoPixel > 1000)
+    //    printf("BLOCK ID %d\n", posicaoPixel);
     if(posicaoPixel < (*rows)*(*cols)) {
         int sum[3] = {0, 0, 0};
         for(linha = (linhaPixel - 2); linha <= (linhaPixel + 2); linha++){
             for(coluna = (colunaPixel - 2); coluna <= (colunaPixel + 2); coluna++) {
                 if ((linha >= 0 && linha < (*rows)) && (coluna >= 0 && coluna < (*cols))) {
-                    /*if(posicaoPixel == 21010 ){
-                        printf("linha %d   coluna %d -- B=%u G=%u R=%u\n", linha, coluna,
-                                            imagemC[(linhaPixel * (*cols) + colunaPixel)*3],
-                                            imagemC[(linhaPixel * (*cols) + colunaPixel)*3+1],
-                                            imagemC[(linhaPixel * (*cols) + colunaPixel)*3+2]);
-                    }*/ 
                     sum[0] += imagemC[(linha * (*cols) + coluna)*3];
                     sum[1] += imagemC[(linha * (*cols) + coluna)*3 + 1];
                     sum[2] += imagemC[(linha * (*cols) + coluna)*3 + 2];
@@ -46,14 +38,6 @@ __global__ void smoothCuda(unsigned char *imagemC, unsigned char *nova_imagemC, 
         nova_imagemC[(linhaPixel * (*cols) + colunaPixel)*3 + 1] = sum[1]/25;
         nova_imagemC[(linhaPixel * (*cols) + colunaPixel)*3 + 2] = sum[2]/25;
     }
-    /*if(posicaoPixel == 21010){
-        printf("DEPOIS:\n");
-        printf("posicaoPixel: %d\n", posicaoPixel);
-        printf("linhaPixel: %d   colunaPixel: %d\n", linhaPixel, colunaPixel);
-        printf("Pixel: B=%u  G=%u  R=%u\n", imagemC[(linhaPixel * (*cols) + colunaPixel)*3],
-                                            imagemC[(linhaPixel * (*cols) + colunaPixel)*3+1],
-                                            imagemC[(linhaPixel * (*cols) + colunaPixel)*3+2]);
-    }*/
 }
 
 int main(int argc, char *argv[]) {
@@ -70,13 +54,12 @@ int main(int argc, char *argv[]) {
         cout << "Quantidade de parametros invalida." << endl;
         return -1;
     }
-    cout << "START" << endl;
     /* imagem       -   imagem a ser processada
      * nova_imagem  -   imagem final 
      */
     Mat imagem, nova_imagem;
     unsigned char *imagemC, *nova_imagemC;
-    int *cols, *rows;
+    long unsigned int *cols, *rows;
     imagem = imread(argv[1], CV_LOAD_IMAGE_COLOR);
 
     if(!imagem.data) {
@@ -87,25 +70,21 @@ int main(int argc, char *argv[]) {
 
     imagem.copyTo(nova_imagem);
 
-    cudaMalloc(&imagemC, imagem.total());
-    cudaMalloc(&nova_imagemC, nova_imagem.total());
+    cudaMalloc(&imagemC, imagem.total() * sizeof(unsigned char));
+    cudaMalloc(&nova_imagemC, nova_imagem.total() * sizeof(unsigned char));
     cudaMalloc(&cols, sizeof(int));
     cudaMalloc(&rows, sizeof(int));
 
-    cudaMemcpy(nova_imagemC, nova_imagem.data, nova_imagem.total(), cudaMemcpyHostToDevice);
-    cudaMemcpy(imagemC, imagem.data, imagem.total(), cudaMemcpyHostToDevice);
+    cudaMemcpy(nova_imagemC, nova_imagem.data, nova_imagem.total() * sizeof(unsigned char), cudaMemcpyHostToDevice);
+    cudaMemcpy(imagemC, imagem.data, imagem.total() * sizeof(unsigned char), cudaMemcpyHostToDevice);
     cudaMemcpy(cols, &imagem.cols, sizeof(int), cudaMemcpyHostToDevice);
     cudaMemcpy(rows, &imagem.rows, sizeof(int), cudaMemcpyHostToDevice);
-    printf("linhas: %d   colunas: %d\n", imagem.rows, imagem.cols); 
-    printf("rows*cols = %d\n", imagem.rows*imagem.cols);
-    printf("BATATA 2\n");
-   
+  
+    printf("nBlocks %d\n", nBlocks);
     smoothCuda<<<nBlocks,nThreads>>>(imagemC, nova_imagemC, cols, rows);
     
-    cudaMemcpy(nova_imagem.data, nova_imagemC, imagem.total(), cudaMemcpyDeviceToHost);
+    cudaMemcpy(nova_imagem.data, nova_imagemC, nova_imagem.total()*sizeof(unsigned char), cudaMemcpyDeviceToHost);
     
-    printf("Nova imagem %u\n", nova_imagem.data[21010]);
-    printf("TESTE 3\n");
     // salva a imagem final com outro nome
     char nome[100] = "new_";
     strcat(nome, argv[1]);
@@ -116,6 +95,5 @@ int main(int argc, char *argv[]) {
     cudaFree(cols);
     cudaFree(rows);
 
-    cout << "END" << endl;
     return 0;
 }
