@@ -18,9 +18,9 @@ __global__ void smoothCuda(unsigned char *imagemC, unsigned char *nova_imagemC, 
     int posicaoPixel, linhaPixel, colunaPixel, linha, coluna;
     //printf("posPixel = %d\n", posicaoPixel);
     if(numLinha < rows) {
-        int sum[3] = {0, 0, 0};
-        linhaPixel = numLinha;
+       linhaPixel = numLinha;
         for(posicaoPixel = (numLinha*cols) ; posicaoPixel < ((numLinha*cols)+cols) ; posicaoPixel++){ 
+            int sum[3] = {0, 0, 0};
             colunaPixel = posicaoPixel % cols;
             for(linha = (linhaPixel - 2); linha <= (linhaPixel + 2); linha++){
                 for(coluna = (colunaPixel - 2); coluna <= (colunaPixel + 2); coluna++) {
