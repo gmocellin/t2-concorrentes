@@ -6,7 +6,7 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
-#define nThreads 1024
+#define nThreads 16
 
 using namespace std;
 using namespace cv;
@@ -79,9 +79,9 @@ int main(int argc, char *argv[]) {
     rows = imagem.rows;
     nBlocks = ceil(imagem.rows/nThreads); 
  
-    cout << imagem.channels() << endl;
-    cout << nBlocks << endl;
-    printf("imagem.total = %ld  cols = %d  rows =%d\n", imagem.total(), cols, rows);
+    //cout << imagem.channels() << endl;
+    //cout << nBlocks << endl;
+    //printf("imagem.total = %ld  cols = %d  rows =%d\n", imagem.total(), cols, rows);
     
     imagem.copyTo(nova_imagem);
     cudaMalloc(&imagemC, imagem.channels() * imagem.total() * sizeof(unsigned char));
@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
 
     smoothCuda<<<nBlocks,nThreads>>>(imagemC, nova_imagemC, cols, rows, imagem.channels());
 
-    cout << cudaGetErrorName(cudaGetLastError()) << endl;    
+    //cout << cudaGetErrorName(cudaGetLastError()) << endl;    
 
     cudaMemcpy(nova_imagem.data, nova_imagemC, imagem.channels() * nova_imagem.total() * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 
