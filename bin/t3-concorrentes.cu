@@ -18,8 +18,8 @@ __global__ void smoothCuda(unsigned char *imagemC, unsigned char *nova_imagemC, 
     int colunaPixel = posicaoPixel % (*cols);
 
     int linha, coluna;
-    if(blockIdx.x > 1000)
-        printf("block %d\n", blockIdx.x);
+//    if(posicaoPixel > 1000)
+//        printf("PP %d\n", blockIdx.x);
     if(posicaoPixel < (*rows)*(*cols)) {
         int sum[3] = {0, 0, 0};
         for(linha = (linhaPixel - 2); linha <= (linhaPixel + 2); linha++){
@@ -31,9 +31,9 @@ __global__ void smoothCuda(unsigned char *imagemC, unsigned char *nova_imagemC, 
                 }
             }
         }
-        nova_imagemC[(linhaPixel * (*cols) + colunaPixel)*3] = sum[0]/25;
-        nova_imagemC[(linhaPixel * (*cols) + colunaPixel)*3 + 1] = sum[1]/25;
-        nova_imagemC[(linhaPixel * (*cols) + colunaPixel)*3 + 2] = sum[2]/25;
+        nova_imagemC[posicaoPixel*3] = sum[0]/25;
+        nova_imagemC[posicaoPixel*3 + 1] = sum[1]/25;
+        nova_imagemC[posicaoPixel*3 + 2] = sum[2]/25;
     }
 }
 
@@ -63,14 +63,14 @@ int main(int argc, char *argv[]) {
         cout <<  "Imagem nao encontrada." << endl;
         return -1;
     }
-    nBlocks = (int)(imagem.total()/nThreads) + 1; 
+    nBlocks = ceil(imagem.total()/nThreads); 
 
     imagem.copyTo(nova_imagem);
 
-    cudaMalloc(&imagemC, imagem.total() * sizeof(unsigned char));
-    cudaMalloc(&nova_imagemC, nova_imagem.total() * sizeof(unsigned char));
-    cudaMalloc(&cols, sizeof(int));
-    cudaMalloc(&rows, sizeof(int));
+    cudaMalloc(&imagemC, 3 * imagem.total() * sizeof(unsigned char));
+    cudaMalloc(&nova_imagemC, 3 * nova_imagem.total() * sizeof(unsigned char));
+    cudaMalloc(&cols, sizeof(long unsigned int));
+    cudaMalloc(&rows, sizeof(long unsigned int));
 
     cudaMemcpy(nova_imagemC, nova_imagem.data, 3 * nova_imagem.total() * sizeof(unsigned char), cudaMemcpyHostToDevice);
     cudaMemcpy(imagemC, imagem.data, 3 * imagem.total() * sizeof(unsigned char), cudaMemcpyHostToDevice);
