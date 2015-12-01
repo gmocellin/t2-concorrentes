@@ -18,8 +18,6 @@ __global__ void smoothCuda(unsigned char *imagemC, unsigned char *nova_imagemC, 
     int colunaPixel = posicaoPixel % (*cols);
 
     int linha, coluna;
-//    if(posicaoPixel > 1000)
-//        printf("PP %d\n", blockIdx.x);
     if(posicaoPixel < (*rows)*(*cols)) {
         int sum[3] = {0, 0, 0};
         for(linha = (linhaPixel - 2); linha <= (linhaPixel + 2); linha++){
@@ -66,7 +64,7 @@ int main(int argc, char *argv[]) {
     nBlocks = ceil(imagem.total()/nThreads); 
 
     imagem.copyTo(nova_imagem);
-
+    //printf("imagem.total = %ld   %ld\n", imagem.total(), imagem.total()*3);
     cudaMalloc(&imagemC, 3 * imagem.total() * sizeof(unsigned char));
     cudaMalloc(&nova_imagemC, 3 * nova_imagem.total() * sizeof(unsigned char));
     cudaMalloc(&cols, sizeof(long unsigned int));
@@ -79,6 +77,8 @@ int main(int argc, char *argv[]) {
   
     smoothCuda<<<nBlocks,nThreads>>>(imagemC, nova_imagemC, cols, rows);
     
+    cout << cudaGetErrorName(cudaGetLastError()) << endl;    
+
     cudaMemcpy(nova_imagem.data, nova_imagemC, 3 *  nova_imagem.total() * sizeof(unsigned char), cudaMemcpyDeviceToHost);
     
     // salva a imagem final com outro nome
