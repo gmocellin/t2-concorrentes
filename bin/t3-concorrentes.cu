@@ -6,7 +6,7 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
-#define nThreads 16
+#define nThreads 1024
 
 using namespace std;
 using namespace cv;

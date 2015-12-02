@@ -10,8 +10,8 @@ do
 	# ten times to have an average
 	for((i=0 ;i<10;i++))
 	do
-		(/usr/bin/time -f "\n%e" make run_cuda ARGS=\\"images/$test_file\\") 2>> results/tmp-cuda-$test_file 1>> results/result-cuda-$test_file
-		total_time_single=$(python -c "print ($total_time_single + $(tail -n 1 results/tmp-cuda-$test_file))")
+		(/usr/bin/time -f "\n%e" make run_cuda ARGS=\\"images/$test_file\\") 2>> results/tmp-cuda-1024-$test_file 1>> results/result-cuda-$test_file
+		total_time_single=$(python -c "print ($total_time_single + $(tail -n 1 results/tmp-cuda-1024-$test_file))")
 
 	done
 
