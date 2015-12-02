@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
      * tamanho      -   vetor com os tamanhos de um corte da imagem
      * status       -   status da thread
      */
-    int rank = 0, nProcessos = 1, tamanho[4];
+    int rank = 0, nProcessos = 4, tamanho[4];
     MPI_Status status;
     
     // eh necessario receber por parametro o tipo de execucao (thread ou normal) e o arquivo a ser processado, nessa ordem
